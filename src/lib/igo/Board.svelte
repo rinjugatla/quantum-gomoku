@@ -20,10 +20,10 @@
     $: isInGrid =
         mousePositionOnGrid === null
             ? false
-            : mousePositionOnGrid.x > 0 - margin / 2 &&
-              mousePositionOnGrid.y > 0 - margin / 2 &&
-              mousePositionOnGrid.x < BoardGridSize + margin / 2 &&
-              mousePositionOnGrid.y < BoardGridSize + margin / 2;
+            : mousePositionOnGrid.x > 0 - margin / 5 &&
+              mousePositionOnGrid.y > 0 - margin / 5 &&
+              mousePositionOnGrid.x < BoardGridSize + margin / 5 &&
+              mousePositionOnGrid.y < BoardGridSize + margin / 5;
 
     // SVG内マウス位置の変換
     const ConvertMousePosition = (e: MouseEvent) => {
