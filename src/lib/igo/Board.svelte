@@ -28,7 +28,7 @@
               mousePositionOnGrid.x < BoardGridSize + margin / 2 &&
               mousePositionOnGrid.y < BoardGridSize + margin / 2;
 
-    function ConvertMousePosition(e: MouseEvent) {
+    const ConvertMousePosition = (e: MouseEvent) => {
         const rect: DOMRect = e.currentTarget?.getBoundingClientRect();
         mousePositionOnGrid = {
             x: e.clientX - rect.x - margin,
