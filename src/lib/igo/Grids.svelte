@@ -16,43 +16,45 @@
     const edgeGridPointLoop = (BoardGridSize - edgeGridPointStart) / (gridInterval * 5);
 </script>
 
-<g class="grid-vertical">
-    {#each { length: gridCount } as _, i}
-        <line
-            x1={i * gridInterval}
-            y1="0"
-            x2={i * gridInterval}
-            y2={BoardSize - margin * 2}
-            stroke="black"
-            stroke-width="1"
-        ></line>
-    {/each}
-</g>
-<g class="grid-horizontal">
-    {#each { length: gridCount } as _, i}
-        <line
-            x1="0"
-            y1={i * gridInterval}
-            x2={BoardSize - margin * 2}
-            y2={i * gridInterval}
-            stroke="black"
-            stroke-width="1"
-        ></line>
-    {/each}
-</g>
-<g class="grid-point">
-    <g class="grid-point-center">
-        <circle cx={centerGridPoint} cy={centerGridPoint} r="2.5" />
-    </g>
-    <g class="grid-point-edge">
-        {#each { length: edgeGridPointLoop } as _, x}
-            {#each { length: edgeGridPointLoop } as _, y}
-                <circle
-                    cx={gridInterval * 3 + gridInterval * 6 * x}
-                    cy={gridInterval * 3 + gridInterval * 6 * y}
-                    r="2.5"
-                />
-            {/each}
+<g class="grid">
+    <g class="grid-vertical">
+        {#each { length: gridCount } as _, i}
+            <line
+                x1={i * gridInterval}
+                y1="0"
+                x2={i * gridInterval}
+                y2={BoardSize - margin * 2}
+                stroke="black"
+                stroke-width="1"
+            ></line>
         {/each}
+    </g>
+    <g class="grid-horizontal">
+        {#each { length: gridCount } as _, i}
+            <line
+                x1="0"
+                y1={i * gridInterval}
+                x2={BoardSize - margin * 2}
+                y2={i * gridInterval}
+                stroke="black"
+                stroke-width="1"
+            ></line>
+        {/each}
+    </g>
+    <g class="grid-point">
+        <g class="grid-point-center">
+            <circle cx={centerGridPoint} cy={centerGridPoint} r="2.5" />
+        </g>
+        <g class="grid-point-edge">
+            {#each { length: edgeGridPointLoop } as _, x}
+                {#each { length: edgeGridPointLoop } as _, y}
+                    <circle
+                        cx={gridInterval * 3 + gridInterval * 6 * x}
+                        cy={gridInterval * 3 + gridInterval * 6 * y}
+                        r="2.5"
+                    />
+                {/each}
+            {/each}
+        </g>
     </g>
 </g>
