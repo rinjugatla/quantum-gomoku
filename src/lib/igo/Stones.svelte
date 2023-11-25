@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { IMousePosition } from '$lib/types';
+    import isEqual from 'lodash/isEqual';
 
     export let gridInterval: number;
     const shadowOffsetX = -2;
@@ -21,6 +22,10 @@
         }
 
         const stonePos = convertMousePositionToStonePosition(position);
+        const exists = existsStone(stonePos);
+        if (exists) {
+            return;
+        }
 
         if (isNextWhite) {
             whiteStones = [...whiteStones, stonePos];
@@ -35,6 +40,26 @@
             y: Math.round(position.y / gridInterval)
         };
         return stonePos;
+    };
+
+    /**
+     * 引数の座標にすでに石があるか
+     * @param position 石の配置位置
+     */
+    const existsStone = (position: IStonePosition): boolean => {
+        const existsInWhite = whiteStones.filter((stone) => isEqual(stone, position)).length > 0;
+        if (existsInWhite) {
+            return true;
+        }
+
+        const existsInBlack =
+            blackStones.filter((stone) => isEqual(stone, position)).length >
+            0;
+        if (existsInBlack) {
+            return true;
+        }
+
+        return false;
     };
 </script>
 
