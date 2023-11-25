@@ -1,6 +1,6 @@
 <script lang="ts">
-    import Grids from "./Grids.svelte";
-    
+    import Grids from './Grids.svelte';
+
     // 盤面グリッド数 最低9, 他(i >= 2) 3 * (2 * i) + 1 => , 13, 19...
     export let gridCount = 13;
     // 盤面グリッドマージン
@@ -21,8 +21,6 @@
 >
     <rect x="0" y="0" width={BoardSize} height={BoardSize} fill="#e3aa4e" />
     <g transform="translate({margin}, {margin})">
-        
-            <Grids {gridCount} {margin} {gridInterval}/>
-
+        <Grids {gridCount} {margin} {gridInterval} />
     </g>
 </svg>
