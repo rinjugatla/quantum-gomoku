@@ -12,13 +12,38 @@
     const BoardGridSize = gridInterval * (gridCount - 1);
     // 盤面全体の大きさ
     const BoardSize = BoardGridSize + margin * 2;
+
+    interface IMousePosition {
+        x: number;
+        y: number;
+    }
+    // マウス位置(グリッド座標)
+    let mousePositionOnGrid: IMousePosition | null = null;
+    let isInGrid: boolean;
+    $: isInGrid =
+        mousePositionOnGrid === null
+            ? false
+            : mousePositionOnGrid.x > 0 - margin / 2 &&
+              mousePositionOnGrid.y > 0 - margin / 2 &&
+              mousePositionOnGrid.x < BoardGridSize + margin / 2 &&
+              mousePositionOnGrid.y < BoardGridSize + margin / 2;
+
+    function ConvertMousePosition(e: MouseEvent) {
+        const rect: DOMRect = e.currentTarget?.getBoundingClientRect();
+        mousePositionOnGrid = {
+            x: e.clientX - rect.x - margin,
+            y: e.clientY - rect.y - margin
+        };
+    }
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <svg
     xmlns="http://www.w3.org/2000/svg"
     width={BoardSize}
     height={BoardSize}
     viewBox="0 0 {BoardSize} {BoardSize}"
+    on:mousemove={ConvertMousePosition}
 >
     <rect x="0" y="0" width={BoardSize} height={BoardSize} fill="#e3aa4e" />
     <g transform="translate({margin}, {margin})">
@@ -30,6 +55,7 @@
                 { x: 1, y: 2 }
             ]}
             whiteStones={[{ x: 3, y: 2 }]}
+            previewNextStone={isInGrid ? mousePositionOnGrid : null}
         />
     </g>
 </svg>
