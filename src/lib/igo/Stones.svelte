@@ -24,12 +24,8 @@
 
         if (isNextWhite) {
             whiteStones = [...whiteStones, stonePos];
-            console.log('white');
-            console.log(whiteStones);
         } else {
             blackStones = [...blackStones, stonePos];
-            console.log('black');
-            console.log(blackStones);
         }
     };
 
