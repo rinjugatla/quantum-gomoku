@@ -1,2 +1,9 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import Board from "$lib/igo/Board.svelte";
+
+    
+</script>
+
+<div class="m-3">
+    <Board />
+</div>
