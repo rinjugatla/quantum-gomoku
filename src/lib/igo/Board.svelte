@@ -1,4 +1,5 @@
 <script lang="ts">
+    import type { IMousePosition } from '$lib/types';
     import Grids from './Grids.svelte';
     import Stones from './Stones.svelte';
 
@@ -12,11 +13,7 @@
     const BoardGridSize = gridInterval * (gridCount - 1);
     // 盤面全体の大きさ
     const BoardSize = BoardGridSize + margin * 2;
-
-    interface IMousePosition {
-        x: number;
-        y: number;
-    }
+    
     // マウス位置(グリッド座標)
     let mousePositionOnGrid: IMousePosition | null = null;
     let isInGrid: boolean;
@@ -28,12 +25,19 @@
               mousePositionOnGrid.x < BoardGridSize + margin / 2 &&
               mousePositionOnGrid.y < BoardGridSize + margin / 2;
 
+    // SVG内マウス位置の変換
     const ConvertMousePosition = (e: MouseEvent) => {
         const rect: DOMRect = e.currentTarget?.getBoundingClientRect();
         mousePositionOnGrid = {
             x: e.clientX - rect.x - margin,
             y: e.clientY - rect.y - margin
         };
+    }
+
+    // 石を配置
+    let stoneComponent: Stones;
+    const AddStone = () => {
+        stoneComponent.AddStone(mousePositionOnGrid);
     }
 </script>
 
@@ -44,18 +48,15 @@
     height={BoardSize}
     viewBox="0 0 {BoardSize} {BoardSize}"
     on:mousemove={ConvertMousePosition}
+    on:mouseup={AddStone}
 >
     <rect x="0" y="0" width={BoardSize} height={BoardSize} fill="#e3aa4e" />
     <g transform="translate({margin}, {margin})">
         <Grids {gridCount} {margin} {gridInterval} />
         <Stones
             {gridInterval}
-            blackStones={[
-                { x: 1, y: 1 },
-                { x: 1, y: 2 }
-            ]}
-            whiteStones={[{ x: 3, y: 2 }]}
             previewNextStone={isInGrid ? mousePositionOnGrid : null}
+            bind:this={stoneComponent}
         />
     </g>
 </svg>

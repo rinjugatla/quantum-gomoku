@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { IMousePosition } from '$lib/types';
+
     export let gridInterval: number;
     const shadowOffsetX = -2;
     const shadowOffsetY = 2;
@@ -11,7 +13,33 @@
     export let blackStones: IStonePosition[] = [];
     export let whiteStones: IStonePosition[] = [];
     export let previewNextStone: IStonePosition | null;
-    let isNextWhite = blackStones.length > whiteStones.length;
+    $: isNextWhite = blackStones.length > whiteStones.length;
+
+    export const AddStone = (position: IMousePosition | null) => {
+        if (position === null) {
+            return;
+        }
+
+        const stonePos = convertMousePositionToStonePosition(position);
+
+        if (isNextWhite) {
+            whiteStones = [...whiteStones, stonePos];
+            console.log('white');
+            console.log(whiteStones);
+        } else {
+            blackStones = [...blackStones, stonePos];
+            console.log('black');
+            console.log(blackStones);
+        }
+    };
+
+    const convertMousePositionToStonePosition = (position: IMousePosition): IStonePosition => {
+        const stonePos = {
+            x: Math.round(position.x / gridInterval),
+            y: Math.round(position.y / gridInterval)
+        };
+        return stonePos;
+    };
 </script>
 
 <g class="shadow">
