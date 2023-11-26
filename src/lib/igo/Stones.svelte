@@ -128,3 +128,30 @@
         {/if}
     </g>
 </g>
+<g class="stone-turn">
+    <g class="black">
+        {#each blackStones as stone, i}
+            <text
+                x={gridInterval * stone.x}
+                y={gridInterval * stone.y}
+                fill="rgba(255, 255, 255, 3)"
+                style="font-weight:bold;font-family:arial;font-size:18px;user-select:none;"
+                text-anchor="middle"
+                alignment-baseline="central">{(i + 1) * 2 - 1}</text
+            >
+        {/each}
+    </g>
+
+    <g class="white">
+        {#each whiteStones as stone, i}
+            <text
+                x={gridInterval * stone.x}
+                y={gridInterval * stone.y}
+                fill="rgba(0, 0, 0, 3)"
+                style="font-weight:bold;font-family:arial;font-size:18px;user-select:none;"
+                text-anchor="middle"
+                alignment-baseline="central">{(i + 1) * 2}</text
+            >
+        {/each}
+    </g>
+</g>
