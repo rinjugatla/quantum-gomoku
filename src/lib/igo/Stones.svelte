@@ -15,7 +15,7 @@
     export let previewNextStone: IStonePosition | null;
     $: isNextWhite = stones.length % 2 == 1;
 
-    export const AddStone = (position: IMousePosition | null) => {
+    export const ArrangementStone = (position: IMousePosition | null) => {
         if (position === null) {
             return;
         }

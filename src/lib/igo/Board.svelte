@@ -36,8 +36,8 @@
 
     // 石を配置
     let stoneComponent: Stones;
-    const AddStone = () => {
-        stoneComponent.AddStone(mousePositionOnGrid);
+    const ArrangementStone = () => {
+        stoneComponent.ArrangementStone(mousePositionOnGrid);
     }
 </script>
 
@@ -48,7 +48,7 @@
     height={BoardSize}
     viewBox="0 0 {BoardSize} {BoardSize}"
     on:mousemove={ConvertMousePosition}
-    on:mouseup={AddStone}
+    on:mouseup={ArrangementStone}
 >
     <rect x="0" y="0" width={BoardSize} height={BoardSize} fill="#e3aa4e" />
     <g transform="translate({margin}, {margin})">
