@@ -11,27 +11,22 @@
         y: number;
     }
 
-    export let blackStones: IStonePosition[] = [];
-    export let whiteStones: IStonePosition[] = [];
+    export let stones: IStonePosition[] = [];
     export let previewNextStone: IStonePosition | null;
-    $: isNextWhite = blackStones.length > whiteStones.length;
+    $: isNextWhite = stones.length % 2 == 1;
 
     export const AddStone = (position: IMousePosition | null) => {
         if (position === null) {
             return;
         }
 
-        const stonePos = convertMousePositionToStonePosition(position);
-        const exists = existsStone(stonePos);
+        const nextStone = convertMousePositionToStonePosition(position);
+        const exists = existsStone(nextStone);
         if (exists) {
             return;
         }
 
-        if (isNextWhite) {
-            whiteStones = [...whiteStones, stonePos];
-        } else {
-            blackStones = [...blackStones, stonePos];
-        }
+        stones = [...stones, nextStone];
     };
 
     const convertMousePositionToStonePosition = (position: IMousePosition): IStonePosition => {
@@ -47,38 +42,19 @@
      * @param position 石の配置位置
      */
     const existsStone = (position: IStonePosition): boolean => {
-        const existsInWhite = whiteStones.filter((stone) => isEqual(stone, position)).length > 0;
-        if (existsInWhite) {
-            return true;
-        }
-
-        const existsInBlack = blackStones.filter((stone) => isEqual(stone, position)).length > 0;
-        if (existsInBlack) {
-            return true;
-        }
-
-        return false;
+        const exists = stones.filter((stone) => isEqual(stone, position)).length > 0;
+        return exists;
     };
 </script>
 
 <g class="shadow">
-    <g class="black">
-        {#each blackStones as stone}
+    <g class="arranged">
+        {#each stones as stone, i}
             <circle
                 cx={gridInterval * stone.x + shadowOffsetX}
                 cy={gridInterval * stone.y + shadowOffsetY}
                 r="15.68"
-                fill="rgba(0, 0, 0, 0.3)"
-            />
-        {/each}
-    </g>
-    <g class="white">
-        {#each whiteStones as stone}
-            <circle
-                cx={gridInterval * stone.x + shadowOffsetX}
-                cy={gridInterval * stone.y + shadowOffsetY}
-                r="15.68"
-                fill="rgba(0, 0, 0, 0.3)"
+                fill={i % 2 == 0 ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.2)'}
             />
         {/each}
     </g>
@@ -95,24 +71,13 @@
     </g>
 </g>
 <g class="stone">
-    <g class="black">
-        {#each blackStones as stone}
+    <g class="arranged">
+        {#each stones as stone, i}
             <circle
                 cx={gridInterval * stone.x}
                 cy={gridInterval * stone.y}
                 r="15.68"
-                fill="rgba(0, 0, 0, 3)"
-            />
-        {/each}
-    </g>
-
-    <g class="white">
-        {#each whiteStones as stone}
-            <circle
-                cx={gridInterval * stone.x}
-                cy={gridInterval * stone.y}
-                r="15.68"
-                fill="rgba(255, 255, 255, 3)"
+                fill={i % 2 == 0 ? 'rgba(0, 0, 0, 3)' : 'rgba(255, 255, 255, 3)'}
             />
         {/each}
     </g>
@@ -129,28 +94,15 @@
     </g>
 </g>
 <g class="stone-turn">
-    <g class="black">
-        {#each blackStones as stone, i}
+    <g class="arranged">
+        {#each stones as stone, i}
             <text
                 x={gridInterval * stone.x}
                 y={gridInterval * stone.y}
-                fill="rgba(255, 255, 255, 3)"
+                fill={i % 2 == 0 ? "rgba(255, 255, 255, 3)" : "rgba(0, 0, 0, 3)"}
                 style="font-weight:bold;font-family:arial;font-size:18px;user-select:none;"
                 text-anchor="middle"
-                alignment-baseline="central">{(i + 1) * 2 - 1}</text
-            >
-        {/each}
-    </g>
-
-    <g class="white">
-        {#each whiteStones as stone, i}
-            <text
-                x={gridInterval * stone.x}
-                y={gridInterval * stone.y}
-                fill="rgba(0, 0, 0, 3)"
-                style="font-weight:bold;font-family:arial;font-size:18px;user-select:none;"
-                text-anchor="middle"
-                alignment-baseline="central">{(i + 1) * 2}</text
+                alignment-baseline="central">{i + 1}</text
             >
         {/each}
     </g>
