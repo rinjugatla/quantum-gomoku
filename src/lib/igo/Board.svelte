@@ -13,7 +13,7 @@
     const BoardGridSize = gridInterval * (gridCount - 1);
     // 盤面全体の大きさ
     const BoardSize = BoardGridSize + margin * 2;
-    
+
     // マウス位置(グリッド座標)
     let mousePositionOnGrid: IMousePosition | null = null;
     let isInGrid: boolean;
@@ -32,13 +32,16 @@
             x: e.clientX - rect.x - margin,
             y: e.clientY - rect.y - margin
         };
-    }
+    };
 
     // 石を配置
     let stoneComponent: Stones;
     const ArrangementStone = () => {
+        if (!isInGrid) {
+            return;
+        }
         stoneComponent.ArrangementStone(mousePositionOnGrid);
-    }
+    };
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
