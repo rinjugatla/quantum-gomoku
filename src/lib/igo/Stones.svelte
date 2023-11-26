@@ -1,8 +1,17 @@
 <script lang="ts">
-    import { isShowTurnNumber, needInit } from '$lib/store';
     import type { IMousePosition } from '$lib/types';
     import isEqual from 'lodash/isEqual';
-    import { onDestroy } from 'svelte';
+    import type Setting from './Setting.svelte';
+
+    let isShowTrunNumber = false;
+    export let settingComponent: Setting;
+    $: settingComponent?.$on('onClickedNeedInit', () => {
+        stones = [];
+    });
+    $: settingComponent?.$on('onChangedShowTurnNumber', (event: CustomEvent) => {
+        let { needShowTurnNumber } = event.detail;
+        isShowTrunNumber = needShowTurnNumber;
+    });
 
     export let gridInterval: number;
     const shadowOffsetX = -2;
@@ -47,29 +56,6 @@
         const exists = stones.filter((stone) => isEqual(stone, position)).length > 0;
         return exists;
     };
-
-    let _isShowTurnNumber: boolean;
-    const unsubscriberIsShowTurnNumber = isShowTurnNumber.subscribe((value) => {
-        _isShowTurnNumber = value;
-    });
-
-    // 初期化
-    let _neetInit: boolean;
-    const unsubscriberNeedInit = needInit.subscribe((value) => {
-        _neetInit = value;
-    });
-
-    $: {
-        if (_neetInit) {
-            stones = [];
-            needInit.set(false);
-        }
-    }
-
-    onDestroy(() => {
-        unsubscriberNeedInit();
-        unsubscriberIsShowTurnNumber();
-    });
 </script>
 
 <g class="shadow">
@@ -120,7 +106,7 @@
 </g>
 <g class="stone-turn">
     <g class="arranged">
-        {#if _isShowTurnNumber}
+        {#if isShowTrunNumber}
             {#each stones as stone, i}
                 <text
                     x={gridInterval * stone.x}

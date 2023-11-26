@@ -1,20 +1,22 @@
 <script lang="ts">
-    import { isShowTurnNumber, needInit } from '$lib/store';
     import { Checkbox, Button } from 'flowbite-svelte';
-    import { onMount } from 'svelte';
-    import { get } from 'svelte/store';
+    import { createEventDispatcher } from 'svelte';
 
-    let checkedShowTurnNumber: boolean;
-    $: {
-        isShowTurnNumber.set(checkedShowTurnNumber);
-    }
+    const dispatch = createEventDispatcher();
 
-    onMount(() => {
-        checkedShowTurnNumber = get(isShowTurnNumber);
-    });
+    const onClickedNeedInitDipatch = () => {
+        dispatch('onClickedNeedInit');
+    };
+
+    let needShowTurnNumber = false;
+    const onChangedShowTurnNumberDispatch = () => {
+        dispatch('onChangedShowTurnNumber', { needShowTurnNumber: needShowTurnNumber });
+    };
 </script>
 
 <div class="flex col">
-    <Button on:click={() => {needInit.set(true)}}>初期化</Button>
-    <Checkbox bind:checked={checkedShowTurnNumber}>着手番号</Checkbox>
+    <Button on:click={onClickedNeedInitDipatch}>初期化</Button>
+    <Checkbox on:change={onChangedShowTurnNumberDispatch} bind:checked={needShowTurnNumber}
+        >着手番号</Checkbox
+    >
 </div>

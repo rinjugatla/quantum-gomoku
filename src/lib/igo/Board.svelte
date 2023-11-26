@@ -1,7 +1,10 @@
 <script lang="ts">
     import type { IMousePosition } from '$lib/types';
     import Grids from './Grids.svelte';
+    import type Setting from './Setting.svelte';
     import Stones from './Stones.svelte';
+
+    export let settingComponent: Setting;
 
     // 盤面グリッド数 最低9, 他(i >= 2) 3 * (2 * i) + 1 => , 13, 19...
     export let gridCount = 13;
@@ -57,6 +60,7 @@
     <g transform="translate({margin}, {margin})">
         <Grids {gridCount} {margin} {gridInterval} />
         <Stones
+            {settingComponent}
             {gridInterval}
             previewNextStone={isInGrid ? mousePositionOnGrid : null}
             bind:this={stoneComponent}
