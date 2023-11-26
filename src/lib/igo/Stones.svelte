@@ -52,9 +52,7 @@
             return true;
         }
 
-        const existsInBlack =
-            blackStones.filter((stone) => isEqual(stone, position)).length >
-            0;
+        const existsInBlack = blackStones.filter((stone) => isEqual(stone, position)).length > 0;
         if (existsInBlack) {
             return true;
         }
