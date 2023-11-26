@@ -1,6 +1,8 @@
 <script lang="ts">
+    import { isShowTurnNumber } from '$lib/store';
     import type { IMousePosition } from '$lib/types';
     import isEqual from 'lodash/isEqual';
+    import { onDestroy } from 'svelte';
 
     export let gridInterval: number;
     const shadowOffsetX = -2;
@@ -45,6 +47,15 @@
         const exists = stones.filter((stone) => isEqual(stone, position)).length > 0;
         return exists;
     };
+
+    let _isShowTurnNumber: boolean;
+    const unsubscriber = isShowTurnNumber.subscribe((value) => {
+        _isShowTurnNumber = value;
+    });
+
+    onDestroy(() => {
+        unsubscriber();
+    })
 </script>
 
 <g class="shadow">
@@ -95,15 +106,17 @@
 </g>
 <g class="stone-turn">
     <g class="arranged">
-        {#each stones as stone, i}
-            <text
-                x={gridInterval * stone.x}
-                y={gridInterval * stone.y}
-                fill={i % 2 == 0 ? "rgba(255, 255, 255, 3)" : "rgba(0, 0, 0, 3)"}
-                style="font-weight:bold;font-family:arial;font-size:18px;user-select:none;"
-                text-anchor="middle"
-                alignment-baseline="central">{i + 1}</text
-            >
-        {/each}
+        {#if _isShowTurnNumber}
+            {#each stones as stone, i}
+                <text
+                    x={gridInterval * stone.x}
+                    y={gridInterval * stone.y}
+                    fill={i % 2 == 0 ? 'rgba(255, 255, 255, 3)' : 'rgba(0, 0, 0, 3)'}
+                    style="font-weight:bold;font-family:arial;font-size:18px;user-select:none;"
+                    text-anchor="middle"
+                    alignment-baseline="central">{i + 1}</text
+                >
+            {/each}
+        {/if}
     </g>
 </g>
