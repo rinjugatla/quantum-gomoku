@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { isShowTurnNumber } from '$lib/store';
-    import { Checkbox } from 'flowbite-svelte';
+    import { isShowTurnNumber, needInit } from '$lib/store';
+    import { Checkbox, Button } from 'flowbite-svelte';
     import { onMount } from 'svelte';
     import { get } from 'svelte/store';
 
@@ -14,6 +14,7 @@
     });
 </script>
 
-<div>
+<div class="flex col">
+    <Button on:click={() => {needInit.set(true)}}>初期化</Button>
     <Checkbox bind:checked={checkedShowTurnNumber}>着手番号</Checkbox>
 </div>

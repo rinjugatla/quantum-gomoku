@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { isShowTurnNumber } from '$lib/store';
+    import { isShowTurnNumber, needInit } from '$lib/store';
     import type { IMousePosition } from '$lib/types';
     import isEqual from 'lodash/isEqual';
     import { onDestroy } from 'svelte';
@@ -49,13 +49,27 @@
     };
 
     let _isShowTurnNumber: boolean;
-    const unsubscriber = isShowTurnNumber.subscribe((value) => {
+    const unsubscriberIsShowTurnNumber = isShowTurnNumber.subscribe((value) => {
         _isShowTurnNumber = value;
     });
 
+    // 初期化
+    let _neetInit: boolean;
+    const unsubscriberNeedInit = needInit.subscribe((value) => {
+        _neetInit = value;
+    });
+
+    $: {
+        if (_neetInit) {
+            stones = [];
+            needInit.set(false);
+        }
+    }
+
     onDestroy(() => {
-        unsubscriber();
-    })
+        unsubscriberNeedInit();
+        unsubscriberIsShowTurnNumber();
+    });
 </script>
 
 <g class="shadow">
