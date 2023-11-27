@@ -32,12 +32,14 @@
         }
 
         const nextStone = convertMousePositionToStonePosition(position);
-        const exists = existsStone(nextStone);
+        const exists = existsStoneSamePosition(nextStone);
         if (exists) {
             return;
         }
 
         stones = [...stones, nextStone];
+        const isChained5 = exists5ChainStone();
+        if(isChained5) { alert(`${isNextWhite ? "白" : "黒"}の勝ち`) }
     };
 
     const convertMousePositionToStonePosition = (position: IMousePosition): IStonePosition => {
@@ -52,9 +54,58 @@
      * 引数の座標にすでに石があるか
      * @param position 石の配置位置
      */
-    const existsStone = (position: IStonePosition): boolean => {
+    const existsStoneSamePosition = (position: IStonePosition): boolean => {
         const exists = stones.filter((stone) => isEqual(stone, position)).length > 0;
         return exists;
+    };
+
+    interface IVector {
+        x: number;
+        y: number;
+    }
+    /**
+     * 左上から
+     * +X 左から右
+     * +Y 上から下
+     */
+    const chainVectors: IVector[] = [
+        // 上段
+        { x: -1, y: -1 },
+        { x: 0, y: -1 },
+        { x: 1, y: -1 },
+        // 中段
+        { x: -1, y: 0 },
+        { x: 1, y: 0 },
+        // 下段
+        { x: -1, y: 1 },
+        { x: 0, y: 1 },
+        { x: 1, y: 1 }
+    ];
+    /**
+     * 同じ色で5個並んだ石があるか
+     */
+    const exists5ChainStone = () => {
+        const stoneNumber = isNextWhite ? 1 : 0;
+        const currentStones = stones.filter((_, index) => index % 2 === stoneNumber);
+        for (const baseStone of currentStones) {
+            for (const baseVector of chainVectors) {
+                for (let i = 0; i < 5; i++) {
+                    const vector = { x: baseVector.x * i, y: baseVector.y * i };
+                    const nextPosition = { x: baseStone.x + vector.x, y: baseStone.y + vector.y };
+                    const chainedStone = currentStones.find((s) => isEqual(s, nextPosition));
+                    if (chainedStone === undefined) {
+                        break;
+                    }
+
+                    const isChained5 = i === 4;
+                    if (isChained5) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     };
 </script>
 
